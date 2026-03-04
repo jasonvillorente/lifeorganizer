@@ -24,11 +24,17 @@ const LoginPage: React.FC = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Login failed");
-
-      login(data.token, data.user);
-      navigate("/");
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Login failed");
+        login(data.token, data.user);
+        navigate("/");
+      } else {
+        const text = await res.text();
+        console.error("Non-JSON response received:", text);
+        throw new Error(`Server error: ${res.status}. Please check console for details.`);
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {

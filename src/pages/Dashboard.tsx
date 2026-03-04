@@ -32,8 +32,19 @@ const Dashboard: React.FC = () => {
           })
         ]);
 
-        const statsData = await statsRes.json();
-        const tasksData = await tasksRes.json();
+        const checkRes = async (res: Response) => {
+          const contentType = res.headers.get("content-type");
+          if (contentType && contentType.includes("application/json")) {
+            return res.json();
+          } else {
+            const text = await res.text();
+            console.error(`Non-JSON response from ${res.url}:`, text);
+            throw new Error(`Server error: ${res.status}`);
+          }
+        };
+
+        const statsData = await checkRes(statsRes);
+        const tasksData = await checkRes(tasksRes);
 
         setStats(statsData);
         setRecentTasks(tasksData.slice(0, 5));
