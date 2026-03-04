@@ -19,6 +19,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { motion } from "motion/react";
+import { checkRes } from "../utils/api";
 
 const Analytics: React.FC = () => {
   const { token } = useAuth();
@@ -37,8 +38,8 @@ const Analytics: React.FC = () => {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);
-        const historyData = await historyRes.json();
-        const summaryData = await summaryRes.json();
+        const historyData = await checkRes(historyRes);
+        const summaryData = await checkRes(summaryRes);
         
         // Mock some history if empty for visualization
         if (historyData.length === 0) {

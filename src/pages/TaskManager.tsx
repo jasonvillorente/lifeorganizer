@@ -14,6 +14,7 @@ import {
   CheckSquare
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { checkRes } from "../utils/api";
 
 const TaskManager: React.FC = () => {
   const { token } = useAuth();
@@ -37,7 +38,7 @@ const TaskManager: React.FC = () => {
       const res = await fetch("/api/tasks", {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const data = await res.json();
+      const data = await checkRes(res);
       setTasks(data);
     } catch (err) {
       console.error("Failed to fetch tasks", err);
@@ -61,11 +62,10 @@ const TaskManager: React.FC = () => {
         },
         body: JSON.stringify(newTask)
       });
-      if (res.ok) {
-        setIsModalOpen(false);
-        setNewTask({ title: "", description: "", category: "Work", priority: "medium", due_date: "" });
-        fetchTasks();
-      }
+      await checkRes(res);
+      setIsModalOpen(false);
+      setNewTask({ title: "", description: "", category: "Work", priority: "medium", due_date: "" });
+      fetchTasks();
     } catch (err) {
       console.error("Failed to add task", err);
     }

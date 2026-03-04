@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import { Link, useNavigate } from "react-router-dom";
+import { checkRes } from "../utils/api";
 
 const Dashboard: React.FC = () => {
   const { token, user } = useAuth();
@@ -31,17 +32,6 @@ const Dashboard: React.FC = () => {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);
-
-        const checkRes = async (res: Response) => {
-          const contentType = res.headers.get("content-type");
-          if (contentType && contentType.includes("application/json")) {
-            return res.json();
-          } else {
-            const text = await res.text();
-            console.error(`Non-JSON response from ${res.url}:`, text);
-            throw new Error(`Server error: ${res.status}`);
-          }
-        };
 
         const statsData = await checkRes(statsRes);
         const tasksData = await checkRes(tasksRes);

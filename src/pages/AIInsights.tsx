@@ -12,6 +12,7 @@ import {
   Lightbulb
 } from "lucide-react";
 import { motion } from "motion/react";
+import { checkRes } from "../utils/api";
 
 const AIInsights: React.FC = () => {
   const { token } = useAuth();
@@ -24,7 +25,7 @@ const AIInsights: React.FC = () => {
         const res = await fetch("/api/analytics/summary", {
           headers: { Authorization: `Bearer ${token}` }
         });
-        const data = await res.json();
+        const data = await checkRes(res);
         setStats(data);
       } catch (err) {
         console.error("Failed to fetch insights", err);

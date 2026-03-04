@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "motion/react";
 import { UserPlus, Mail, Lock, User, AlertCircle } from "lucide-react";
+import { checkRes } from "../utils/api";
 
 const SignupPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -31,17 +32,9 @@ const SignupPage: React.FC = () => {
         body: JSON.stringify({ name, email, password }),
       });
 
-      const contentType = res.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Registration failed");
-        login(data.token, data.user);
-        navigate("/");
-      } else {
-        const text = await res.text();
-        console.error("Non-JSON response received:", text);
-        throw new Error(`Server error: ${res.status}. Please check console for details.`);
-      }
+      const data = await checkRes(res);
+      login(data.token, data.user);
+      navigate("/");
     } catch (err: any) {
       setError(err.message);
     } finally {
