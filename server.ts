@@ -3,7 +3,6 @@ import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
-import authRoutes from "./server/routes/auth.ts";
 import taskRoutes from "./server/routes/tasks.ts";
 import analyticsRoutes from "./server/routes/analytics.ts";
 
@@ -34,7 +33,6 @@ app.use((req, res, next) => {
 });
 
 // API Routes
-app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/analytics", analyticsRoutes);
 

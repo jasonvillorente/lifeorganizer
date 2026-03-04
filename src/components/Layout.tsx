@@ -6,7 +6,6 @@ import {
   CheckSquare, 
   BarChart3, 
   Sparkles, 
-  LogOut, 
   User as UserIcon,
   Menu,
   X
@@ -14,9 +13,8 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 
 const Sidebar: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(false);
 
   const navItems = [
@@ -25,11 +23,6 @@ const Sidebar: React.FC = () => {
     { name: "Analytics", path: "/analytics", icon: BarChart3 },
     { name: "AI Insights", path: "/insights", icon: Sparkles },
   ];
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
 
   return (
     <>
@@ -77,7 +70,7 @@ const Sidebar: React.FC = () => {
           </nav>
 
           <div className="mt-auto pt-6 border-t border-stone-100">
-            <div className="flex items-center gap-3 px-3 mb-6">
+            <div className="flex items-center gap-3 px-3">
               <div className="w-10 h-10 bg-stone-100 rounded-full flex items-center justify-center text-stone-500">
                 <UserIcon size={20} />
               </div>
@@ -86,13 +79,6 @@ const Sidebar: React.FC = () => {
                 <p className="text-xs text-stone-500 truncate">{user?.email}</p>
               </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-3 py-2.5 text-stone-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200"
-            >
-              <LogOut size={20} />
-              Sign Out
-            </button>
           </div>
         </div>
       </aside>

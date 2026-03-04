@@ -45,4 +45,16 @@ db.exec(`
   );
 `);
 
+// Create default guest user if not exists
+const guestUser = db.prepare("SELECT * FROM users WHERE id = 1").get();
+if (!guestUser) {
+  console.log("Creating default guest user...");
+  db.prepare("INSERT INTO users (id, name, email, password) VALUES (?, ?, ?, ?)").run(
+    1,
+    "Guest User",
+    "guest@example.com",
+    "guest-password"
+  );
+}
+
 export default db;
