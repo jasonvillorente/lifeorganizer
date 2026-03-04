@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/", authenticateToken, (req: AuthRequest, res) => {
   const userId = req.user?.id;
+  console.log(`Fetching tasks for user: ${userId}`);
   const tasks = db.prepare("SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC").all(userId);
   res.json(tasks);
 });

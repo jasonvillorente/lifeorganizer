@@ -24,6 +24,8 @@ export const authenticateToken = (
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
+  console.log(`Authenticating token for: ${req.url}`);
+
   if (!token) {
     return res.status(401).json({ error: "Access denied. Token missing." });
   }

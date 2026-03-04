@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/summary", authenticateToken, (req: AuthRequest, res) => {
   const userId = req.user?.id;
+  console.log(`Fetching analytics summary for user: ${userId}`);
   if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
   const stats = calculateProductivity(userId);

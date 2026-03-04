@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
+  console.log(`Register attempt for: ${email}`);
 
   if (!name || !email || !password) {
     return res.status(400).json({ error: "All fields are required" });
@@ -23,6 +24,7 @@ router.post("/register", async (req, res) => {
 
     res.status(201).json({ token, user: { id: user.id, name, email } });
   } catch (err: any) {
+    console.error("Register Error:", err);
     if (err.code === "SQLITE_CONSTRAINT") {
       return res.status(400).json({ error: "Email already exists" });
     }
@@ -32,6 +34,7 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
+  console.log(`Login attempt for: ${email}`);
 
   if (!email || !password) {
     return res.status(400).json({ error: "Email and password are required" });
@@ -47,6 +50,7 @@ router.post("/login", async (req, res) => {
     const token = generateToken({ id: user.id, email: user.email });
     res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
   } catch (err) {
+    console.error("Login Error:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });

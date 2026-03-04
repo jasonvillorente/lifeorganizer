@@ -6,8 +6,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const db = new Database(path.join(__dirname, "../database.sqlite"));
+console.log("Database initialized at:", path.join(__dirname, "../database.sqlite"));
 
 // Initialize tables
+console.log("Initializing database tables...");
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
